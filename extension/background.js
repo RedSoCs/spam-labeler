@@ -95,12 +95,16 @@ function predict(text) {
   const maxS = Math.max(...scores);
   const exps = scores.map(s => Math.exp(s - maxS));
   const sum = exps.reduce((a, b) => a + b, 0);
-  const probClass1 = model.classes.length > 1 ? exps[1] / sum : 0;
 
   const bestIdx = scores.indexOf(Math.max(...scores));
+  const isSpam = model.classes[bestIdx] === 1;
+
+  // Get probability of the PREDICTED class (not hardcoded index 1)
+  const predictedProb = sum > 0 ? exps[bestIdx] / sum : 0;
+
   return {
-    isSpam: model.classes[bestIdx] === 1,
-    prob: probClass1,
+    isSpam: isSpam,
+    prob: predictedProb,
   };
 }
 

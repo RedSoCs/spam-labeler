@@ -178,8 +178,8 @@
           // Highlight the h3 title yellow
           const h3 = result.querySelector("h3");
           if (h3) {
-            h3.style.color = "#d4a017";
-            h3.style.fontWeight = "700";
+            h3.style.setProperty("color", "#d4a017", "important");
+            h3.style.setProperty("font-weight", "700", "important");
           }
 
           highlighted++;
@@ -189,9 +189,11 @@
       result.dataset.slHighlighted = "1";
     }
 
-    // Print full summary table
+    // Print summary
     console.log("[CS] === SCAN RESULTS ===");
-    console.table(summary);
+    summary.forEach((item, i) => {
+      console.log("[CS] " + i + ". " + item.icon + " " + item.label + " (" + item.prob + "): " + item.text);
+    });
     console.log("[CS] Total:", checked, "| Spam:", highlighted, "| Safe:", checked - highlighted);
   }
 
@@ -369,7 +371,15 @@
 
   init();
 
+  // Debounced re-scan for dynamically loaded results
+  let scanTimeout = null;
   new MutationObserver(() => {
-    addCheckboxes();
+    if (scanTimeout) clearTimeout(scanTimeout);
+    scanTimeout = setTimeout(() => {
+      addCheckboxes();
+      if (modelLoaded) {
+        highlightSpamDescriptions();
+      }
+    }, 800);
   }).observe(document.body, { childList: true, subtree: true });
 })();
