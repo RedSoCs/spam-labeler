@@ -1,0 +1,105 @@
+/* ── Spam Labeler Toolbar ────────────────────────────────────────── */
+
+#spam-labeler-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #1a1a2e;
+  border-bottom: 2px solid #333;
+  font-family: system-ui, -apple-system, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sl-label {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.sl-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #fff;
+}
+
+.sl-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.sl-btn:active {
+  transform: translateY(0);
+}
+
+.sl-spam {
+  background: #e74c3c;
+}
+
+.sl-spam:hover {
+  background: #c0392b;
+}
+
+.sl-safe {
+  background: #27ae60;
+}
+
+.sl-safe:hover {
+  background: #1e8449;
+}
+
+.sl-count {
+  color: #aaa;
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+.sl-status {
+  color: #fff;
+  font-size: 13px;
+  margin-left: auto;
+}
+
+.sl-flash {
+  animation: slPulse 0.5s ease;
+}
+
+@keyframes slPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); background: #fff !important; color: #000 !important; }
+  100% { transform: scale(1); }
+}
+
+/* ── Checkboxes on search results ────────────────────────────────── */
+
+.sl-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin: 8px 0 8px 12px;
+  cursor: pointer;
+  accent-color: #3498db;
+  z-index: 10;
+}
+
+.sl-checkbox:hover {
+  transform: scale(1.2);
+}
+
+/* Highlight selected results */
+.sl-selected {
+  background: rgba(52, 152, 219, 0.08) !important;
+  border-left: 3px solid #3498db !important;
+  border-radius: 4px;
+}

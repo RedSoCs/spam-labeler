@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Spam Labeler - Google Search",
+  "version": "1.0",
+  "description": "Label Google search results as spam or safe to collect training data",
+  "permissions": [
+    "downloads",
+    "activeTab"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "web_accessible_resources": [
+    "model.json",
+    "model.json.gz"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://www.google.com/*", "*://google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
