@@ -176,11 +176,18 @@ fn main() {
 
     let model = BernoulliNB::fit(&ml_samples, 0.1);
 
-    // Version based on sample count: v0.{samples / 10}
+    // Version: samples / 1000, up to 2 decimal places
+    // 100 samples → v0.1, 458 → v0.46, 1000 → v1, 2500 → v2.5
     let sample_count = train_data.len();
     let feature_count = vectorizer.vocabulary.len();
-    let minor = sample_count / 10;
-    let version = format!("v0.{}", minor);
+    let version_num = sample_count as f64 / 1000.0;
+    let version = if version_num.fract() == 0.0 {
+        format!("v{:.0}", version_num)
+    } else if (version_num * 10.0).fract() == 0.0 {
+        format!("v{:.1}", version_num)
+    } else {
+        format!("v{:.2}", version_num)
+    };
 
     let exported = ExportModel {
         version: version.clone(),
