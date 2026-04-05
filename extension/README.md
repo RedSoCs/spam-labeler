@@ -7,7 +7,7 @@ A Firefox add-on that scans Google search results, highlights spam titles in **y
 ```
 ┌────────────────────────────────────────────────────┐
 │  Toolbar (top of page)                              │
-│  🏷️ Label:  🔴 SPAM   🟢 SAFE   ■v0.45   (0 sel)  │
+│  🏷️ Label:  🔴 SPAM   🟢 SAFE   ■v0.68   (0 sel)  │
 ├────────────────────────────────────────────────────┤
 │                                                      │
 │  [☑]  Result 1 title ← yellow if spam               │
@@ -66,7 +66,7 @@ Welcome bonus! Deposit now get 200% match up to $500
 3. Go to `about:debugging` → **This Firefox** → **Load Temporary Add-on**
 4. Select this directory's `manifest.json`
 
-The status indicator (■v0.45) in the toolbar turns **green** when the model is loaded successfully.
+The status indicator (■v0.68) in the toolbar turns **green** when the model is loaded successfully.
 
 ## Training Workflow
 

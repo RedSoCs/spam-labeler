@@ -157,7 +157,7 @@ let val: f64 = (feature_counts[i][j] + 0.1) / (class_counts[i] + 0.2);
 - Adds checkbox next to each result title
 - Sends descriptions to background for prediction
 - Highlights spam result titles in **yellow** (`#d4a017`)
-- Shows model version in status indicator (e.g., `v0.45`)
+- Shows model version in status indicator (e.g., `v0.68`)
 
 ### 5.3 Data Collection Flow
 
@@ -181,7 +181,7 @@ Where `N = total_training_samples / 10`
 | Version | Samples | Description |
 |---------|---------|-------------|
 | v0.10 | 100 | Initial training |
-| v0.45 | 458 | Current default |
+| v0.68 | 680 | Current default |
 | v0.100 | 1,000 | 1K milestone |
 | v0.250 | 2,500 | Large dataset |
 
@@ -189,7 +189,7 @@ Where `N = total_training_samples / 10`
 
 - `model_version.txt` — Auto-incremented by `export_model.rs`
 - Extension status dot shows current version
-- Console logs: `[BG] Model v0.45 loaded: 32447 features`
+- Console logs: `[BG] Model v0.68 loaded: 32447 features`
 
 ### Versioning Notes
 
@@ -197,7 +197,7 @@ Where `N = total_training_samples / 10`
 - Version reflects **sample count**, not feature count
 - Each retrain after adding new data produces a new version
 - Use `./retrain.sh` to ensure version is consistent across TUI and extension
-- Track version in commit messages: `Retrain → v0.52 (520 samples)`
+- Track version in commit messages: `Retrain → v0.68 (680 samples)`
 
 ---
 
@@ -325,6 +325,6 @@ Model versions follow the format **`v0.{N}`** where `N = total_training_samples 
 | Version | Samples | Description |
 |---------|---------|-------------|
 | v0.10 | 100 | Initial training |
-| v0.45 | 458 | Current default |
+| v0.68 | 680 | Current default |
 | v0.100 | 1,000 | 1K milestone |
 | v0.250 | 2,500 | Large dataset |

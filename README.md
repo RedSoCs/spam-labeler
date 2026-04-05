@@ -123,7 +123,7 @@ Model versions follow the format **`v0.{N}`** where `N = sample_count / 10`:
 | Samples | Version | Meaning |
 |---------|---------|---------|
 | 100 | v0.10 | Initial training |
-| 458 | v0.45 | Current |
+| 680 | v0.68 | Current |
 | 1000 | v0.100 | 1K samples |
 | 2500 | v0.250 | 2.5K samples |
 
