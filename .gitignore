@@ -4,6 +4,7 @@
 # Trained models (contain learned detection patterns)
 model.bin
 extension/model.json.gz
+extension/model.json
 model_version.txt
 
 # Collected training data (real-world spam/safe samples)

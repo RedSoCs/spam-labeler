@@ -2,6 +2,9 @@
 
 Terminal application for detecting spam/casino content using ML-based text classification with GPT-4o tokenization and keyword intent extraction.
 
+[![CI](https://github.com/RedSocs/spam-labeler/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-labeler/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/RedSocs/spam-labeler)](https://github.com/RedSocs/spam-labeler/releases)
+
 ## Features
 
 - **GPT-4o Tokenizer** — Uses `o200k_base` (tiktoken-rs) for accurate token counting
@@ -224,3 +227,26 @@ See [extension/README.md](extension/README.md) for the full training workflow.
 3. Select `extension/manifest.json`
 
 The extension runs a background script that keeps the model in memory across page reloads. Each search result's h3 title turns **yellow** if detected as spam.
+
+## CI/CD & Releases
+
+### Versioning
+
+```bash
+# Show current version
+./version.sh
+
+# Bump and tag
+./version.sh patch   # 0.1.0 → 0.1.1
+./version.sh minor   # 0.1.0 → 0.2.0
+./version.sh major   # 0.1.0 → 1.0.0
+./version.sh 0.2.0   # explicit version
+
+# Push tag to trigger release
+git push origin main --tags
+```
+
+### GitHub Actions
+
+- **CI** — Runs on every push/PR: builds, runs tests, uploads artifacts
+- **Release** — Triggered by `v*` tags: packages binaries, creates GitHub Release
