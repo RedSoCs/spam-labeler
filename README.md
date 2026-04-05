@@ -37,7 +37,7 @@ cargo run --release
 ## Project Structure
 
 ```
-test-token/
+spam-intent-labeler/
 ├── src/
 │   ├── main.rs              # TUI application
 │   ├── keyword_intent.rs     # Keyword intent extraction module
