@@ -174,16 +174,16 @@ User clicks SPAM/SAFE
 
 ## 6. Model Versioning
 
-### Format: `v0.{N}`
+### Format: `v{N}`
 
-Where `N = total_training_samples / 10`
+Where `N = total_training_samples / 1000`
 
 | Version | Samples | Description |
 |---------|---------|-------------|
-| v0.10 | 100 | Initial training |
+| v0.1 | 100 | Initial training |
 | v0.68 | 680 | Current default |
-| v0.100 | 1,000 | 1K milestone |
-| v0.250 | 2,500 | Large dataset |
+| v1 | 1,000 | 1K milestone |
+| v2.5 | 2,500 | Large dataset |
 
 ### Tracking
 
@@ -320,11 +320,11 @@ Expected accuracy: **>95%** with balanced data (500+ samples per class).
 
 ## 12. Model Versioning
 
-Model versions follow the format **`v0.{N}`** where `N = total_training_samples / 10`:
+Model versions follow the format **`v{N}`** where `N = total_training_samples / 1000`:
 
 | Version | Samples | Description |
 |---------|---------|-------------|
-| v0.10 | 100 | Initial training |
+| v0.1 | 100 | Initial training |
 | v0.68 | 680 | Current default |
-| v0.100 | 1,000 | 1K milestone |
-| v0.250 | 2,500 | Large dataset |
+| v1 | 1,000 | 1K milestone |
+| v2.5 | 2,500 | Large dataset |
