@@ -3,7 +3,7 @@
 Terminal application for detecting spam/casino content using ML-based text classification with GPT-4o tokenization and keyword intent extraction.
 
 [![CI](https://github.com/RedSocs/spam-labeler/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-labeler/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/RedSocs/spam-labeler)](https://github.com/RedSocs/spam-labeler/releases)
+[![Version](https://img.shields.io/github/v/tag/RedSocs/spam-labeler?label=version&color=blue)](https://github.com/RedSocs/spam-labeler/releases)
 
 ## Features
 
