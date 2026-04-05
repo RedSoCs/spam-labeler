@@ -46,7 +46,7 @@ jobs:
         with:
           name: spam-labeler-binaries
           path: |
-            target/release/spam-labeler
+            target/release/spam-intent-labeler
             target/release/eval
             target/release/export_model
             target/release/keyword_intent_test
@@ -83,7 +83,7 @@ jobs:
       - name: Package binaries
         run: |
           mkdir -p dist
-          cp target/release/spam-labeler dist/
+          cp target/release/spam-intent-labeler dist/
           cp target/release/eval dist/
           cp target/release/export_model dist/
           cp target/release/keyword_intent_test dist/
