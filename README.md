@@ -15,6 +15,10 @@ Terminal application for detecting spam/casino content using ML-based text class
 - **TUI** — Real-time ratatui interface with token analysis and ML prediction
 - **Firefox Extension** — Collect real-world training data from Google search results
 
+## TUI Preview
+
+![Spam Intent Labeler TUI](spam-labeler.gif)
+
 ## Quick Start
 
 ```bash
