@@ -197,7 +197,23 @@ Generates a full Markdown report at `tests/keyword-intent-report.md` with:
 }
 ```
 
-## Extension Installation
+## Extension
+
+### Spam Highlighting
+
+The extension scans Google search results and highlights spam titles in **yellow** (`#d4a017`).
+
+![Spam Labeler Highlight](snapshot.png)
+
+Each result gets a checkbox on the right side. The model runs locally in the background — no data leaves your machine.
+
+### Collect Training Data
+
+The toolbar provides **🔴 SPAM** and **🟢 SAFE** buttons to label search results and download them as training files.
+
+See [extension/README.md](extension/README.md) for the full training workflow.
+
+### Installation
 
 1. Firefox → `about:config` → set `xpinstall.signatures.required` = `false`
 2. `about:debugging` → **This Firefox** → **Load Temporary Add-on**
