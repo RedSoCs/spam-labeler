@@ -2,7 +2,7 @@
 
 ## Overview
 
-A Rust terminal application that classifies text as spam/casino or safe using ML inference, combined with a Firefox extension for collecting real-world training data from Google search results.
+A Rust terminal application that classifies text as spam/casino or safe using ML inference, combined with a Firefox extension for collecting real-world training data from Google search results, and a **keyword intent extraction** module for structured intent classification of spam payloads.
 
 ---
 
@@ -15,6 +15,8 @@ A Rust terminal application that classifies text as spam/casino or safe using ML
 │           TUI (ratatui)             │  Input, token display, analysis
 ├─────────────────────────────────────┤
 │        ML Engine (smartcore)         │  Bernoulli NB, vectorizer, prediction
+├─────────────────────────────────────┤
+│   Keyword Intent Extractor          │  Prefix keyword, RAKE, intent mapping
 ├─────────────────────────────────────┤
 │       Data Ingestion                │  Training data loader, file I/O
 └─────────────────────────────────────┘
@@ -34,6 +36,8 @@ A Rust terminal application that classifies text as spam/casino or safe using ML
 | **Terminal** | `crossterm` | Raw mode, events, screen |
 | **Serialization** | `bincode`, `serde` | Model save/load |
 | **ML** | Custom BernoulliNB | Text classification |
+| **Regex** | `regex` | Text normalization, HTML stripping |
+| **Intent Extractor** | `icu_segmenter`, `once_cell` | Thai text segmentation, lazy statics |
 
 ---
 
@@ -197,7 +201,71 @@ Where `N = total_training_samples / 10`
 
 ---
 
-## 7. File I/O
+## 9. Keyword Intent Extraction
+
+### 9.1 Overview
+
+Extracts structured intent data from raw spam text payloads (primarily Thai), producing JSON output with:
+- **Primary intent** classification (Navigational, Commercial, Transactional, Informational, Unknown)
+- **Extracted keywords** with RAKE-style relevance scores
+- **Confidence score** for the classification
+
+### 9.2 Two-Technique Approach
+
+**Technique 1: Prefix Keyword Extraction**
+- Gets the first word (before first space) as the primary intent keyword
+- If 100% Thai → use as-is
+- If 100% English/ASCII → use as-is
+- If mixed Thai+English (e.g., `888NEO`) → extract the leading dominant portion
+
+**Technique 2: Tiktoken Sub-tokenization**
+- Uses `o200k_base` BPE to split compound prefixes
+- Example: `888NEO` → tokens → `888`, `neo`
+- Example: `789GOLD` → tokens → `789`, `gold`
+
+### 9.3 Intent Dictionary
+
+A curated mapping of keywords to intent categories:
+
+| Intent | Keywords |
+|--------|----------|
+| **Commercial** | `ฟรี`, `โปรโมชั่น`, `โบนัส`, `ไม่ต้องฝาก`, `เครดิตฟรี`, `cashback` |
+| **Transactional** | `สมัคร`, `ทางเข้า`, `ลงทะเบียน`, `ฝาก`, `ถอน`, `wallet`, `vip`, `สมาชิก` |
+| **Informational** | `วิธี`, `กติกา`, `แนะนำ`, `ทดลอง`, `เงื่อนไข` |
+| **Navigational** | `888`, `pg slot`, `joker`, `jili`, `spade`, `ufa`, `bet`, `slot`, `casino` |
+
+### 9.4 Output Schema
+
+```json
+{
+  "primary_intent": "Navigational",
+  "confidence_score": 0.80,
+  "extracted_keywords": [
+    { "word": "888neo", "score": 1.00 },
+    { "word": "888", "score": 0.80 },
+    { "word": "slot", "score": 0.20 }
+  ],
+  "metadata": {
+    "language": "th",
+    "processor": "rake-rs-v1"
+  }
+}
+```
+
+### 9.5 Usage
+
+```bash
+# Test against data/spam.txt
+cargo run --release --bin keyword_intent_test
+
+# Generate full report
+cargo run --release --bin generate_report
+# Output: tests/keyword-intent-report.md
+```
+
+---
+
+## 10. File I/O
 
 ### Training Data Format
 
@@ -237,7 +305,7 @@ cd extension && gzip -c model.json > model.json.gz && rm model.json
 
 ---
 
-## 8. Evaluation
+## 11. Evaluation
 
 Run `cargo run --release --bin eval` to:
 
@@ -247,3 +315,16 @@ Run `cargo run --release --bin eval` to:
 4. Report accuracy with per-sample breakdown
 
 Expected accuracy: **>95%** with balanced data (500+ samples per class).
+
+---
+
+## 12. Model Versioning
+
+Model versions follow the format **`v0.{N}`** where `N = total_training_samples / 10`:
+
+| Version | Samples | Description |
+|---------|---------|-------------|
+| v0.10 | 100 | Initial training |
+| v0.45 | 458 | Current default |
+| v0.100 | 1,000 | 1K milestone |
+| v0.250 | 2,500 | Large dataset |

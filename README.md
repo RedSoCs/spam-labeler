@@ -1,11 +1,14 @@
 # Spam Detection Tokenizer
 
-Terminal application for detecting spam/casino content using ML-based text classification with GPT-4o tokenization.
+Terminal application for detecting spam/casino content using ML-based text classification with GPT-4o tokenization and keyword intent extraction.
 
 ## Features
 
 - **GPT-4o Tokenizer** — Uses `o200k_base` (tiktoken-rs) for accurate token counting
 - **Bernoulli Naive Bayes** — Trigram + quadgram vectorizer with Lidstone smoothing (α=0.1)
+- **Keyword Intent Extraction** — RAKE-based Thai keyword extraction with intent classification (keyword-intents.md spec)
+- **Prefix Keyword Technique** — Extracts first word as primary intent, sub-tokenized via tiktoken
+- **Intent Categories** — Navigational, Commercial, Transactional, Informational, Unknown
 - **Keyword Weighting** — Manual boost for high-signal spam keywords
 - **Hard Rules** — Currency symbol and spam link detection
 - **Model Persistence** — Trained model saved to `model.bin`, reused across runs
@@ -37,9 +40,14 @@ cargo run --release
 test-token/
 ├── src/
 │   ├── main.rs              # TUI application
+│   ├── keyword_intent.rs     # Keyword intent extraction module
 │   └── bin/
 │       ├── eval.rs           # Evaluate model against raw data
-│       └── export_model.rs   # Export model for Firefox extension
+│       ├── export_model.rs   # Export model for Firefox extension
+│       ├── keyword_intent_test.rs  # Test keyword intent extraction
+│       └── generate_report.rs      # Generate keyword intent report
+├── tests/
+│   └── keyword-intent-report.md    # Generated intent extraction report
 ├── extension/
 │   ├── manifest.json         # Firefox extension manifest
 │   ├── background.js         # Background script (persistent model)
@@ -52,6 +60,7 @@ test-token/
 │       ├── spam.[timestamp].txt
 │       └── safe.[timestamp].txt
 ├── retrain.sh                # Retrain and update extension model
+├── keyword-intents.md        # Keyword intent extraction spec
 ├── model.bin                 # Trained model (binary)
 └── model_version.txt         # Version counter
 ```
@@ -120,6 +129,66 @@ cargo run --release --bin eval
 ```
 
 Tests the model against all files in `data/raw/` and reports accuracy.
+
+## Keyword Intent Extraction
+
+Extract structured intent data from spam text using the [keyword-intents.md](keyword-intents.md) spec.
+
+### Run Tests
+
+```bash
+cargo run --release --bin keyword_intent_test
+```
+
+Outputs per-sample analysis showing prefix keywords, sub-tokens, intent classification, and extracted keywords with scores.
+
+### Generate Report
+
+```bash
+cargo run --release --bin generate_report
+```
+
+Generates a full Markdown report at `tests/keyword-intent-report.md` with:
+- Intent distribution summary
+- Per-sample breakdown (prefix keyword, sub-tokens, intent, keywords)
+- Sample JSON output matching the spec schema
+- Performance metrics
+
+### Intent Categories
+
+| Intent | Description | Example Keywords |
+|--------|-------------|-----------------|
+| **Navigational** | Looking for specific brands | `888`, `joker`, `jili`, `slot`, `ufa`, `bet` |
+| **Commercial** | Promotions, freebies, bonuses | `ฟรี`, `โบนัส`, `โปรโมชั่น`, `เครดิตฟรี` |
+| **Transactional** | Ready to register/deposit | `สมัคร`, `ลงทะเบียน`, `ฝาก`, `สมาชิก`, `vip` |
+| **Informational** | How-to, rules, guides | `วิธี`, `แนะนำ`, `ทดลอง`, `กติกา` |
+| **Unknown** | No clear intent match | — |
+
+### Extraction Techniques
+
+1. **Prefix Keyword Extraction** — Gets the first word (before space) as the primary intent keyword. If mixed Thai/English (e.g., `888NEO`), extracts the dominant prefix portion.
+2. **Tiktoken Sub-tokenization** — Uses `o200k_base` BPE to split compound prefixes (e.g., `888NEO` → `888`, `neo`).
+3. **Intent Dictionary Scanning** — RAKE-style keyword extraction by scanning body text against a curated intent dictionary.
+
+### Example Output
+
+```json
+{
+  "primary_intent": "Navigational",
+  "confidence_score": 0.80,
+  "extracted_keywords": [
+    { "word": "888neo", "score": 1.00 },
+    { "word": "888", "score": 0.80 },
+    { "word": "neo", "score": 0.80 },
+    { "word": "slot", "score": 0.20 },
+    { "word": "jili", "score": 0.20 }
+  ],
+  "metadata": {
+    "language": "th",
+    "processor": "rake-rs-v1"
+  }
+}
+```
 
 ## Extension Installation
 
