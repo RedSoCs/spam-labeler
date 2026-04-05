@@ -1,0 +1,7 @@
+# Example safe samples — replace with your own collected data
+# One sample per line
+Hello, how are you today?
+The weather is nice and sunny.
+ร้านอาหารอร่อยใกล้บ้าน แนะนำเมนูพิเศษวันนี้
+การประชุมวันพรุ่งนี้ เวลา 10 โมงเช้า
+Machine learning is transforming technology.

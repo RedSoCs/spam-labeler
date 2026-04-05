@@ -1,1 +1,21 @@
 /target
+
+# ── Sensitive / generated data ──────────────────────────
+# Trained models (contain learned detection patterns)
+model.bin
+extension/model.json.gz
+model_version.txt
+
+# Collected training data (real-world spam/safe samples)
+data/raw/
+data/spam.txt
+data/safe.txt
+
+# Generated reports
+tests/*.md
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+.qwen/

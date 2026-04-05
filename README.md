@@ -21,6 +21,10 @@ Terminal application for detecting spam/casino content using ML-based text class
 # Build
 cargo build --release
 
+# Setup training data from examples
+chmod +x setup_data.sh retrain.sh
+./setup_data.sh
+
 # Run TUI application
 cargo run --release
 ```
@@ -46,23 +50,23 @@ spam-intent-labeler/
 │       ├── export_model.rs   # Export model for Firefox extension
 │       ├── keyword_intent_test.rs  # Test keyword intent extraction
 │       └── generate_report.rs      # Generate keyword intent report
-├── tests/
-│   └── keyword-intent-report.md    # Generated intent extraction report
+├── tests/                    # Generated reports (not tracked)
+│   └── keyword-intent-report.md
 ├── extension/
 │   ├── manifest.json         # Firefox extension manifest
 │   ├── background.js         # Background script (persistent model)
-│   ├── content.js            # Content script (UI + highlighting)
-│   └── model.json.gz         # Compressed ML model for extension
+│   └── content.js            # Content script (UI + highlighting)
 ├── data/
-│   ├── spam.txt              # Spam training samples
-│   ├── safe.txt              # Safe training samples
-│   └── raw/                  # Collected data from extension
-│       ├── spam.[timestamp].txt
-│       └── safe.[timestamp].txt
+│   ├── spam.example.txt      # Example spam samples (for setup)
+│   ├── safe.example.txt      # Example safe samples (for setup)
+│   ├── spam.txt              # [PRIVATE] Your spam training data
+│   ├── safe.txt              # [PRIVATE] Your safe training data
+│   └── raw/                  # [PRIVATE] Collected data from extension
 ├── retrain.sh                # Retrain and update extension model
+├── setup_data.sh             # Initialize training data from examples
 ├── keyword-intents.md        # Keyword intent extraction spec
-├── model.bin                 # Trained model (binary)
-└── model_version.txt         # Version counter
+├── model.bin                 # [PRIVATE] Trained model (binary)
+└── model_version.txt         # [PRIVATE] Version counter
 ```
 
 ## Training Pipeline
@@ -81,6 +85,9 @@ spam-intent-labeler/
 mv ~/Downloads/spam.*.txt data/raw/
 mv ~/Downloads/safe.*.txt data/raw/
 ```
+
+> **Note:** `data/raw/`, `data/spam.txt`, and `data/safe.txt` are not tracked in git.
+> Use `./setup_data.sh` to create them from examples for initial development.
 
 ### 3. Retrain
 

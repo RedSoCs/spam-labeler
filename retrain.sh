@@ -7,6 +7,13 @@ set -e
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$PROJECT_DIR"
 
+# Ensure training data exists
+if [ ! -f "data/spam.txt" ] || [ ! -f "data/safe.txt" ]; then
+    echo "No training data found. Running setup..."
+    bash setup_data.sh
+    echo ""
+fi
+
 echo "========================================="
 echo "  Spam Detection Model - Retrain"
 echo "========================================="
